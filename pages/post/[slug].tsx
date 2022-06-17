@@ -5,6 +5,8 @@ import { GetStaticProps } from 'next'
 import PortableText from 'react-portable-text'
 import { useForm, SubmitHandler } from 'react-hook-form'
 import { useState } from 'react'
+import Comment from '../../components/Comments/Comment'
+import Error from '../../components/Error'
 
 interface Props {
   post: Post
@@ -19,8 +21,6 @@ interface IFormInput {
 
 function Post({ post }: Props) {
   const [submitted, setSubmitted] = useState(false)
-
-  console.log(post)
 
   const {
     register,
@@ -150,21 +150,7 @@ function Post({ post }: Props) {
           </label>
 
           {/* errors will return when field validation fails */}
-          <div className="flex flex-col p-5">
-            {errors.name && (
-              <span className="text-red-500">- The Name field is required</span>
-            )}
-            {errors.comment && (
-              <span className="text-red-500">
-                - The Comment field is required
-              </span>
-            )}
-            {errors.email && (
-              <span className="text-red-500">
-                - The Email field is required
-              </span>
-            )}
-          </div>
+          <Error errors={errors} />
 
           <input
             className="shadow bg-yellow-500 hover:bg-yellow-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded cursor-pointer"
@@ -175,20 +161,7 @@ function Post({ post }: Props) {
       )}
 
       {/* Comments */}
-
-      <div className="flex flex-col p-10 my-10 max-w-2xl mx-auto shadow-yellow-500 shadow space-y-2">
-        <h3 className="text-4xl">Comments</h3>
-        <hr className="pb-2" />
-
-        {post.comments.map((comment) => (
-          <div key={comment._id}>
-            <p>
-              <span className="text-yellow-500">{comment.name}: </span>
-              {comment.comment}
-            </p>
-          </div>
-        ))}
-      </div>
+      <Comment post={post} />
     </main>
   )
 }
